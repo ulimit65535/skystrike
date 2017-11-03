@@ -6,7 +6,7 @@ class Source(models.Model):
     """
     采集数据来源
     """
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     url = models.URLField()
 
 class Article(models.Model):

@@ -7,10 +7,11 @@
 
 import scrapy
 from scrapy_djangoitem import DjangoItem
-from warehouse.models import Article
+from warehouse.models import Article, Source
 
 
 class ArticleItem(DjangoItem):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
     django_model = Article
+
+class SourceItem(DjangoItem):
+    django_model = Source
