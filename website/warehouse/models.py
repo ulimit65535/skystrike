@@ -17,5 +17,6 @@ class Article(models.Model):
     author = models.CharField(max_length=20)
     posted_time = models.DateTimeField()
     collected_time = models.DateTimeField()
+    url = models.URLField(unique=True)
     source = models.ForeignKey(Source)
 

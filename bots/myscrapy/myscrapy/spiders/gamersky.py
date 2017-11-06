@@ -3,7 +3,7 @@
 
 import scrapy
 from datetime import datetime
-from myscrapy.items import ArticleItem, SourceItem
+from myscrapy.items import ArticleItem
 from warehouse.models import Source
 
 
@@ -20,17 +20,13 @@ class GamerskySpider(scrapy.Spider):
             yield scrapy.Request(url=page_url, callback=self.parse_article)
 
     def parse_article(self, response):
-        source = Source()
-        source.name = self.name
-        source.url = self.start_urls[0]
-
         article = ArticleItem()
         article['title'] = "111"
         article['body'] = "222"
         article['author'] = "333"
         article['posted_time'] = datetime.now()
         article['collected_time'] = datetime.now()
-        article['source'] = source
-        #yield article
-        article.save()
+        article['url'] = "http://www.gamersky.com/404.html"
+        article['source'] = Source.objects.get(name=self.name)
+        yield article
 

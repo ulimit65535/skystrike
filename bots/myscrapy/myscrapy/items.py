@@ -7,11 +7,8 @@
 
 import scrapy
 from scrapy_djangoitem import DjangoItem
-from warehouse.models import Article, Source
+from warehouse.models import Article
 
 
 class ArticleItem(DjangoItem):
     django_model = Article
-
-class SourceItem(DjangoItem):
-    django_model = Source

@@ -1,0 +1,10 @@
+[
+  {
+    "model": "warehouse.source",
+    "pk": 1,
+    "fields": {
+      "name": "gamersky",
+      "url": "http://www.gamersky.com"
+    }
+  }
+]
