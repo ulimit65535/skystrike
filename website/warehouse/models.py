@@ -14,8 +14,8 @@ class Article(models.Model):
     """采集到的文章"""
     title = models.CharField(max_length=70)
     body = models.TextField()
-    author = models.CharField(max_length=20)
-    posted_time = models.DateTimeField()
+    author = models.CharField(max_length=20, null=True)
+    posted_time = models.DateTimeField(null=True, blank=True)
     collected_time = models.DateTimeField()
     url = models.URLField(unique=True)
     source = models.ForeignKey(Source)

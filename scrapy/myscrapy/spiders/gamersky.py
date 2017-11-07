@@ -2,6 +2,8 @@
 # encoding: utf-8
 
 import scrapy
+import re
+import sys
 from datetime import datetime
 from myscrapy.items import ArticleItem
 from warehouse.models import Source
@@ -21,12 +23,16 @@ class GamerskySpider(scrapy.Spider):
 
     def parse_article(self, response):
         article = ArticleItem()
-        article['title'] = "111"
-        article['body'] = "222"
-        article['author'] = "333"
-        article['posted_time'] = datetime.now()
+        article['body'] = response.css('div.Mid2L_con').extract_first()
+        sel = response.css('div.Mid2L_tit')
+        article['title'] = sel.xpath("./*[self::h1]/text()").extract_first()
+        detail = sel.css("div.detail").extract_first()
+        author_list = re.findall(r"作者：(.+?) ", detail)
+        article['author'] = author_list[0] if len(author_list) > 0 else None
+        posted_time_list = re.findall(r"    (.+?)来源", detail)
+        article['posted_time'] = datetime.strptime(posted_time_list[0].strip(),'%Y-%m-%d %H:%M:%S') if len(posted_time_list) > 0 else None
         article['collected_time'] = datetime.now()
-        article['url'] = "http://www.gamersky.com/404.html"
+        article['url'] = response.url
         article['source'] = Source.objects.get(name=self.name)
         yield article
 
