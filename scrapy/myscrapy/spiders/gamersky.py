@@ -23,13 +23,18 @@ class GamerskySpider(scrapy.Spider):
 
     def parse_article(self, response):
         article = ArticleItem()
-        article['body'] = response.css('div.Mid2L_con').extract_first()
+
         sel = response.css('div.Mid2L_tit')
         article['title'] = sel.xpath("./*[self::h1]/text()").extract_first()
         detail = sel.css("div.detail").extract_first()
         author_list = re.findall(r"作者：(.+?) ", detail)
         article['author'] = author_list[0] if len(author_list) > 0 else None
         posted_time_list = re.findall(r"    (.+?)来源", detail)
+
+        sel = response.css('div.Mid2L_con')
+        article['body'] = sel.extract_first()
+        article['first_pic_url'] = sel.xpath('//img/@src').extract_first()
+
         article['posted_time'] = datetime.strptime(posted_time_list[0].strip(),'%Y-%m-%d %H:%M:%S') if len(posted_time_list) > 0 else None
         article['collected_time'] = datetime.now()
         article['url'] = response.url

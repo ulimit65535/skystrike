@@ -18,5 +18,6 @@ class Article(models.Model):
     posted_time = models.DateTimeField(null=True, blank=True)
     collected_time = models.DateTimeField()
     url = models.URLField(unique=True)
+    first_pic_url = models.URLField(null=True)
     source = models.ForeignKey(Source)
 
