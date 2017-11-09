@@ -31,13 +31,30 @@ class GamerskySpider(scrapy.Spider):
         article['author'] = author_list[0] if len(author_list) > 0 else None
         posted_time_list = re.findall(r"    (.+?)来源", detail)
 
-        sel = response.css('div.Mid2L_con')
-        article['body'] = sel.extract_first()
-        article['first_pic_url'] = sel.xpath('//img/@src').extract_first()
-
         article['posted_time'] = datetime.strptime(posted_time_list[0].strip(),'%Y-%m-%d %H:%M:%S') if len(posted_time_list) > 0 else None
         article['collected_time'] = datetime.now()
         article['url'] = response.url
         article['source'] = Source.objects.get(name=self.name)
-        yield article
+
+        sel = response.css('div.Mid2L_con')
+        article['first_pic_url'] = sel.xpath('//img/@src').extract_first()
+        article['body'] = sel.extract_first().replace(sel.css('span.pagecss').extract_first(), "")
+
+        next_pages = sel.xpath("//div[@class='page_css']/a[contains(text(), '下一页')]/@href").extract()
+        if next_pages:
+            yield scrapy.Request(url=next_pages[0], meta={"article": article}, callback=self.parse_article_next)
+        else:
+            yield article
+
+
+    def parse_article_next(self, response):
+        article = response.meta['article']
+        sel = response.css('div.Mid2L_con')
+        article['body'] = article['body'] + sel.extract_first().replace(sel.css('span.pagecss').extract_first(), "")
+
+        next_pages = sel.xpath("//div[@class='page_css']/a[contains(text(), '下一页')]/@href").extract()
+        if next_pages:
+            yield scrapy.Request(url=next_pages[0], meta={"article": article}, callback=self.parse_article_next)
+        else:
+            yield article
 
