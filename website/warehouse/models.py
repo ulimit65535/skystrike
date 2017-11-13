@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from django.urls import reverse
 
 # Create your models here.
 class Source(models.Model):
@@ -24,4 +25,7 @@ class Article(models.Model):
     url = models.URLField(unique=True)
     first_pic_url = models.URLField(null=True)
     source = models.ForeignKey(Source)
+
+    def get_absolute_url(self):
+        return reverse('warehouse:article', kwargs={'pk': self.pk})
 

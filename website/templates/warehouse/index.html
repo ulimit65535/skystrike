@@ -197,7 +197,7 @@
                             {% get_articles_today source as article_list %}
                             {% for article in article_list %}
                             </br>
-                            <div><a href="{{ article.url }}">{{ article.title }}</a></div>
+                            <div><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></div>
                             {% empty %}
                             <div><a href="#">暂无文章</a></div>
                             {% endfor %}
