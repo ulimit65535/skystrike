@@ -2,10 +2,23 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from django.http import HttpResponse
-from django.shortcuts import render
-from .models import Article
+from .models import Article,Source
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView
+from datetime import datetime
 
-def index(request):
-    article_list = Article.objects.all().order_by('-collected_time')
-    return render(request, 'warehouse/index.html', context={'article_list': article_list})
+class IndexView(ListView):
+    template_name = 'warehouse/index.html';
+    context_object_name = 'source_list'
+    model = Source
+
+    # def get_queryset(self):
+        # source_list = Source.objects.all()
+        # return source_list
+
+    # def get_context_data(self, **kwargs):
+        # """只获取当天的文章"""
+        # for source in self.get_queryset():
+            # kwargs['article_list_' + source.name] = Article.objects.filter(source=source, posted_time__gte=datetime.now().date())
+        # return super(IndexView, self).get_context_data(**kwargs)
+
