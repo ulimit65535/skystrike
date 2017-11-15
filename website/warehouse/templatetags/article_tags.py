@@ -9,5 +9,5 @@ register = template.Library()
 
 @register.simple_tag
 def get_articles_today(source):
-    article_list = Article.objects.filter(source=source, posted_time__gte=datetime.now().date())
+    article_list = Article.objects.filter(source=source, posted_time__gte=datetime.now().date()).order_by('-posted_time')
     return article_list

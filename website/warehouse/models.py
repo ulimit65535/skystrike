@@ -20,10 +20,10 @@ class Article(models.Model):
     title = models.CharField(max_length=70)
     body = models.TextField()
     author = models.CharField(max_length=20, null=True)
-    posted_time = models.DateTimeField(null=True, blank=True)
+    posted_time = models.DateTimeField(null=False, blank=False, unique=True)
     collected_time = models.DateTimeField()
-    url = models.URLField(unique=True)
-    first_pic_url = models.URLField(null=True)
+    url = models.URLField(null=False, blank=False)
+    first_pic_url = models.URLField(default=None)
     source = models.ForeignKey(Source)
 
     def get_absolute_url(self):
