@@ -12,7 +12,12 @@ class IndexView(ListView):
     model = Source
 
 class ArticleView(DetailView):
-    template_name = 'warehouse/single-standard.html'
+    template_name = 'warehouse/article.html'
     context_object_name = 'article'
+    model = Article
+
+class SourceView(ListView):
+    template_name = 'warehouse/source.html'
+    context_object_name = 'article_list'
     model = Article
 

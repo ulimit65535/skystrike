@@ -9,4 +9,5 @@ app_name = 'warehouse'
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^article/(?P<pk>[0-9]+)/$', views.ArticleView.as_view(), name='article'),
+    url(r'^source/(?P<pk>[0-9]+)/$', views.SourceView.as_view(), name='source'),
 ]

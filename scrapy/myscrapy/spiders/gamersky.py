@@ -18,6 +18,7 @@ class GamerskySpider(scrapy.Spider):
 
     def parse(self, response):
         page_xpath = "//div[@class='Mid1Mcon block']/ul[@class='Ptxt block']/li/div/a[font[contains(@class, 'tc')]]/@href"
+        #page_xpath = "//div[@class='Mid1Mcon block']/ul/li/div/a[font[contains(@class, 'tc')]]/@href"
         for page_url in response.xpath(page_xpath).extract():
             if page_url.startswith("http://acg.gamersky.com"):
                 yield scrapy.Request(url=page_url, callback=self.parse_article_acg)
